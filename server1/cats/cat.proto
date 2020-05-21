@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package cat;
+
+import "google/protobuf/empty.proto";
+
+service CatService {
+    rpc Get (GetCatRequest) returns (GetCatResponse) {
+    }
+
+    rpc Create (CreateCatRequest) returns (CreateCatResponse) {
+    }
+
+    rpc List (google.protobuf.Empty) returns (ListCatResponse) {
+    }
+}
+
+message ListCatResponse {
+    repeated Cat cats = 1;
+}
+
+message GetCatRequest {
+    string name = 1;
+}
+
+message GetCatResponse {
+    Cat cat = 1;
+}
+
+message Cat {
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+    string breed = 4;
+}
+
+message CreateCatRequest {
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+    string breed = 4;
+}
+
+message CreateCatResponse {
+    Cat cat = 1;
+}
