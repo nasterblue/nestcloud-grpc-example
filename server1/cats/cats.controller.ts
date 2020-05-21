@@ -8,16 +8,17 @@ import {
   GetCatResponse,
   ListCatResponse
 } from './interfaces/cat.interface';
-import {NestCloud} from '@nestcloud/core';
+import {AppService} from '../app.service';
 
-@Controller('cats')
+@Controller()
 export class CatsController {
-  constructor(@Inject(CatsOrmService) private readonly catsService: CatsOrmService) {
+  constructor(@Inject(CatsOrmService) private readonly catsService: CatsOrmService,
+              @Inject(AppService) private appService: AppService) {
   }
 
   @GrpcMethod('CatService')
   async create(data: CreateCatRequest): Promise<CreateCatResponse> {
-    const grpc = `${NestCloud.global.boot.get('service.name')}:${NestCloud.global.boot.get('service.port')}`;
+    const grpc = `${this.appService.get('service.name', null)}:${this.appService.get('service.port', null)}`;
     console.log(`${grpc} get invoked`, new Date().toString());
     const cat = await this.catsService.create(data);
     return {
@@ -27,7 +28,7 @@ export class CatsController {
 
   @GrpcMethod('CatService')
   async get(data: GetCatRequest): Promise<GetCatResponse> {
-    const grpc = `${NestCloud.global.boot.get('service.name')}:${NestCloud.global.boot.get('service.port')}`;
+    const grpc = `${this.appService.get('service.name', null)}:${this.appService.get('service.port', null)}`;
     console.log(`${grpc} get invoked`, new Date().toString());
     const cat = await this.catsService.findOne(data.name);
     return {
@@ -37,7 +38,7 @@ export class CatsController {
 
   @GrpcMethod('CatService')
   async list(): Promise<ListCatResponse> {
-    const grpc = `${NestCloud.global.boot.get('service.name')}:${NestCloud.global.boot.get('service.port')}`;
+    const grpc = `${this.appService.get('service.name', null)}:${this.appService.get('service.port', null)}`;
     console.log(`${grpc} get list`, new Date().toString());
     const cats = await this.catsService.findAll();
     return {cats: cats};

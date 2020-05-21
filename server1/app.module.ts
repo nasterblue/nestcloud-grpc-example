@@ -1,20 +1,26 @@
 import {Module} from '@nestjs/common';
-import {NEST_BOOT, NEST_CONSUL} from '@nestcloud/common';
+import {BOOT, CONSUL} from '@nestcloud/common';
 import {BootModule} from '@nestcloud/boot';
 import {ConsulModule} from '@nestcloud/consul';
 import {ServiceModule} from '@nestcloud/service';
 import {LoadbalanceModule} from '@nestcloud/loadbalance';
 import {AppController} from './app.controller';
+import {AppService} from './app.service';
 import {CatsEntity} from './cats/entities/cats.entity';
 import {CatsModule} from './cats/cats.module';
+import {CatsController} from './cats/cats.controller';
+import {CatsOrmService} from './cats/cats.orm.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
+import * as path from 'path';
 
 @Module({
   imports: [
-    BootModule.register(__dirname, `config.yaml`),
-    ConsulModule.register({dependencies: [NEST_BOOT]}),
-    ServiceModule.register({dependencies: [NEST_BOOT, NEST_CONSUL]}),
-    LoadbalanceModule.register({dependencies: [NEST_BOOT]}),
+    BootModule.forRoot({
+      filePath: path.resolve(__dirname, 'config.yaml'),
+    }),
+    ConsulModule.forRootAsync({inject: [BOOT]}),
+    ServiceModule.forRootAsync({inject: [BOOT, CONSUL]}),
+    LoadbalanceModule.forRootAsync({inject: [BOOT]}),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres',
@@ -27,9 +33,16 @@ import {TypeOrmModule} from '@nestjs/typeorm';
         synchronize: true,
       }),
     }),
+    TypeOrmModule.forFeature([CatsEntity]),
     CatsModule
   ],
-  controllers: [AppController],
+  controllers: [
+    CatsController
+  ],
+  providers: [
+    AppService,
+    CatsOrmService,
+  ]
 })
 export class AppModule {
 }

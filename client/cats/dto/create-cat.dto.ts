@@ -6,12 +6,12 @@ export enum CatBreed {
 }
 
 export class CreateCatDto {
-  @ApiProperty()
+  @ApiProperty({example: "Tom"})
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({example: 1})
   age: number;
 
-  @ApiProperty()
+  @ApiProperty({enum: CatBreed, enumName: 'CatBreed'})
   breed: string;
 }

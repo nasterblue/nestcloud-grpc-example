@@ -1,10 +1,9 @@
-import {Module, NestModule, MiddlewareConsumer} from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {CatsController} from './cats.controller';
 import {CatsOrmService} from './cats.orm.service';
 import {CatsEntity} from './entities/cats.entity';
-import {ConsulConfig} from '@nestcloud/config';
-import {NestCloud} from '@nestcloud/core';
+import {AppService} from '../app.service';
 
 @Module({
   imports: [
@@ -14,7 +13,8 @@ import {NestCloud} from '@nestcloud/core';
     CatsController,
   ],
   providers: [
-    CatsOrmService
+    CatsOrmService,
+    AppService
   ],
 })
 export class CatsModule {

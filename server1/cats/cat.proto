@@ -5,13 +5,13 @@ package cat;
 import "google/protobuf/empty.proto";
 
 service CatService {
-    rpc Get (GetCatRequest) returns (GetCatResponse) {
+    rpc get (GetCatRequest) returns (GetCatResponse) {
     }
 
-    rpc Create (CreateCatRequest) returns (CreateCatResponse) {
+    rpc create (CreateCatRequest) returns (CreateCatResponse) {
     }
 
-    rpc List (google.protobuf.Empty) returns (ListCatResponse) {
+    rpc list (google.protobuf.Empty) returns (ListCatResponse) {
     }
 }
 
