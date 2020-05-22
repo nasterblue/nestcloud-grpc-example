@@ -3,7 +3,8 @@ import {GrpcClient, RpcClient, Service} from '@nestcloud/grpc';
 import {CatService} from './interfaces/cat-service.interface';
 import {join} from 'path';
 import {ListCatResponse} from './interfaces/cat.interface';
-import {CreateCatDto} from './dto/create-cat.dto';
+import {CreateCatDto, CatBreed} from './dto/create-cat.dto';
+import * as faker from 'faker';
 
 const grpcConfig = {
   service: 'rpc-server',
@@ -41,4 +42,21 @@ export class CatsController {
     console.log('client list invoked', new Date().toString());
     return data;
   }
+
+
+  @Get('/seedDB/:total')
+  async seedDB(@Param('total') total: number): Promise<any> {
+    for (let i = 0; i < total; i++) {
+      await this.catService.create(this.randomCat()).toPromise();
+    }
+  }
+
+  private randomCat() {
+    return {
+      name: faker.name.firstName(),
+      age: Math.floor((Math.random() * 10) + 1),
+      breed: Math.floor((Math.random() * 10)) % 2 === 0 ? CatBreed.male : CatBreed.female
+    };
+  }
+
 }
