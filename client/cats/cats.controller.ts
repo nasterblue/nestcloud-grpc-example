@@ -5,19 +5,17 @@ import {join} from 'path';
 import {ListCatResponse} from './interfaces/cat.interface';
 import {CreateCatDto} from './dto/create-cat.dto';
 
+const grpcConfig = {
+  service: 'rpc-server',
+  package: 'cat',
+  protoPath: join(__dirname, './interfaces/cat-service.proto'),
+};
+
 @Controller('/cats')
 export class CatsController {
-  @RpcClient({
-    service: 'rpc-server',
-    package: 'cat',
-    protoPath: join(__dirname, './interfaces/cat-service.proto'),
-  })
+  @RpcClient(grpcConfig)
   private readonly client: GrpcClient;
-  @Service('CatService', {
-    service: 'rpc-server',
-    package: 'cat',
-    protoPath: join(__dirname, './interfaces/cat-service.proto'),
-  })
+  @Service('CatService', grpcConfig)
   private catService: CatService;
 
 
@@ -27,7 +25,6 @@ export class CatsController {
     console.log('client get invoked', new Date().toString());
     return data;
   }
-
 
 
   @Post('')
