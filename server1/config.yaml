@@ -20,5 +20,5 @@ database:
     port: 5432
     username: nest
     password: nest
-    database: nest2
+    database: nest
     synchronize: true

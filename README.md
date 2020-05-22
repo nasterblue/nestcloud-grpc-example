@@ -5,14 +5,35 @@
 consul agent -dev
 ```
 
-## Requirement Components
+## Config
 
-* @nestcloud/common
-* @nestcloud/core
-* @nestcloud/consul
-* @nestcloud/consul-service
-* @nestcloud/consul-loadbalance
-* @nestcloud/grpc
+``server1/config.yaml``
+```yaml
+consul:
+  host: localhost
+  port: 8500
+service:
+  discoveryHost: localhost
+  healthCheck:
+    timeout: 1s
+    interval: 10s
+    tcp: ${{ service.discoveryHost }}:${{ service.port }}
+  maxRetry: 5
+  retryInterval: 5000
+  name: rpc-server
+  port: 50053
+
+
+database:
+  postgres:
+    type: postgres
+    host: localhost
+    port: 5432
+    username: nest
+    password: nest
+    database: nest
+    synchronize: true
+```
 
 ## How to run
 

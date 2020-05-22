@@ -10,7 +10,7 @@ service:
   maxRetry: 5
   retryInterval: 5000
   name: rpc-server
-  port: 50054
+  port: 50052
 
 
 database:
@@ -20,5 +20,5 @@ database:
     port: 5432
     username: nest
     password: nest
-    database: nest2
+    database: nest
     synchronize: true
